@@ -1,0 +1,18 @@
+.footer-color,.navbar-color {
+    color: #000000;
+    background-color: #f5eb7f;
+}
+a{
+    color:black
+}
+body {
+    color:azure;
+   background: #780206;
+   /* fallback for old browsers */
+   background: -webkit-linear-gradient(to bottom, #061161, #780206);
+   /* Chrome 10-25, Safari 5.1-6 */
+   background: linear-gradient(to bottom, #061161, #780206);
+   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}

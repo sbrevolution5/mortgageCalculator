@@ -1,0 +1,16 @@
+.footer-color,.navbar-color {
+    color: #332d2d;
+    background-color: #ececec;
+}
+a{
+    color:#332d2d
+}
+body {
+    background: #05ba12;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #05ba12, #05ba12);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #037e37, #05ba12);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}

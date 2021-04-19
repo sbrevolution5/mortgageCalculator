@@ -1,0 +1,19 @@
+.footer-color, .navbar-color {
+    color: #cccccc;
+    background-color: #D90B0B;
+}
+a{
+    color: #bbbbbb;
+}
+.text-muted-alt{
+    color: #99841d;
+}
+body {
+    background: #bf4a06;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #F2B138, #bf4a06);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #F2B138, #bf4a06);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
