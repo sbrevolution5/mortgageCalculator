@@ -26,12 +26,16 @@ function buildPaymentSchedule() {
     let rate = parseFloat(document.getElementById("rate").value)/100
     let inputArray = [balance,term,rate]
     localStorage.setItem("inputArray", JSON.stringify(inputArray))
-    let paymentArray = getPayments(balance, term, rate);
-    displayData(paymentArray, balance);
+    let paymentObj = getPayments(balance, term, rate);
+
+    displayData(paymentObj, balance, totalInterest);
 }
 
 function getPayments(balance, term, rate) {
-    let res = []
+    let res = {
+        payArr: [],
+        summary:{}
+    }
     let totalInterest = 0;
     let prevBalance = balance
     let payment = calcPayment(balance, term, rate)
@@ -42,8 +46,12 @@ function getPayments(balance, term, rate) {
         totalInterest += interest
         remainingBalance -= principal;
         prevBalance = remainingBalance
-        res.push(new row(i, payment, principal, interest, totalInterest, remainingBalance))
+        res.payArr.push(new row(i, payment, principal, interest, totalInterest, remainingBalance))
     }
+    res.summary.totalCost = (balance + totalInterest)
+    res.summary.totalInterest = totalInterest
+    res.summary.monthlyPayment = payment
+    res.summary.totalPrincipal = balance
     return res
 }
 // Total Monthly Payment = (amount loaned) * (rate / 1200) / (1–(1 + rate / 1200)(-Number of Months)) 
@@ -59,31 +67,36 @@ function calcInterest(prevBalance, rate) {
 function calcPrincipal(payment, interest) {
     return payment - interest;
 }
+function moneyFormat(str) {
+    return str.toLocaleString("en-us", {
+        style: 'currency',
+        currency: 'USD',
+        signDisplay: "never"
+    })
+}
 
-function displayData(payments, totalPrincipal) {
+function displayData(payObj, totalPrincipal) {
     const template = document.getElementById("dataTemplate");
     const resultsBody = document.getElementById("resultsBody");
     //clear table
     resultsBody.innerHTML = "";
 
-    for (let i = 0; i < payments.length; i++) {
+    for (let i = 0; i < payObj.payArr.length; i++) {
         const dataRow = document.importNode(template.content, true);
 
-        dataRow.getElementById("tempMonth").textContent = payments[i].month;
-        dataRow.getElementById("tempPayment").textContent = `${payments[i].payment.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
-        dataRow.getElementById("tempPrincipal").textContent = `${payments[i].principal.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
-        dataRow.getElementById("tempInterest").textContent = `${payments[i].interest.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
-        dataRow.getElementById("tempTotalInterest").textContent = `${payments[i].totalInterest.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
-        dataRow.getElementById("tempBalance").textContent = `${payments[i].balance.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
+        dataRow.getElementById("tempMonth").textContent = payObj.payArr[i].month;
+        dataRow.getElementById("tempPayment").textContent = `${moneyFormat(payObj.payArr[i].payment)}`;
+        dataRow.getElementById("tempPrincipal").textContent = `${moneyFormat(payObj.payArr[i].principal)}`;
+        dataRow.getElementById("tempInterest").textContent = `${moneyFormat(payObj.payArr[i].interest)}`;
+        dataRow.getElementById("tempTotalInterest").textContent = `${moneyFormat(payObj.payArr[i].totalInterest)}`;
+        dataRow.getElementById("tempBalance").textContent = `${moneyFormat(payObj.payArr[i].balance)}`;
 
         resultsBody.appendChild(dataRow);
     }
-    document.getElementById("monthlyPayment").innerText = `${payments[0].payment.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
-    document.getElementById("totalPrincipal").innerText = `${totalPrincipal.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
-    let totalInterest = parseFloat(payments[(payments.length - 1)].totalInterest);
-    document.getElementById("totalInterest").innerText = `${totalInterest.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
-    let totalCost =  (totalPrincipal + totalInterest)
+    document.getElementById("monthlyPayment").innerText = `${moneyFormat(payObj.summary.monthlyPayment)}`
+    document.getElementById("totalPrincipal").innerText = `${moneyFormat(payObj.summary.totalPrincipal)}`
+    document.getElementById("totalInterest").innerText = `${moneyFormat(payObj.summary.totalInterest)}`
     
-    document.getElementById("totalCost").innerText = `${totalCost.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
+    document.getElementById("totalCost").innerText = `${moneyFormat(payObj.summary.totalCost)}`
 }
 loadpage()
