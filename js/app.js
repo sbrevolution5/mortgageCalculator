@@ -70,20 +70,20 @@ function displayData(payments, totalPrincipal) {
         const dataRow = document.importNode(template.content, true);
 
         dataRow.getElementById("tempMonth").textContent = payments[i].month;
-        dataRow.getElementById("tempPayment").textContent = `$${payments[i].payment.toFixed(2)}`;
-        dataRow.getElementById("tempPrincipal").textContent = `$${payments[i].principal.toFixed(2)}`;
-        dataRow.getElementById("tempInterest").textContent = `$${payments[i].interest.toFixed(2)}`;
-        dataRow.getElementById("tempTotalInterest").textContent = `$${payments[i].totalInterest.toFixed(2)}`;
-        dataRow.getElementById("tempBalance").textContent = `$${payments[i].balance.toFixed(2)}`;
+        dataRow.getElementById("tempPayment").textContent = `${payments[i].payment.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
+        dataRow.getElementById("tempPrincipal").textContent = `${payments[i].principal.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
+        dataRow.getElementById("tempInterest").textContent = `${payments[i].interest.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
+        dataRow.getElementById("tempTotalInterest").textContent = `${payments[i].totalInterest.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
+        dataRow.getElementById("tempBalance").textContent = `${payments[i].balance.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`;
 
         resultsBody.appendChild(dataRow);
     }
-    document.getElementById("monthlyPayment").innerText = `$${payments[0].payment.toFixed(2)}`
-    document.getElementById("totalPrincipal").innerText = `$${totalPrincipal.toFixed(2)/*.toLocaleString("en-US", {style: "currency", currency: "USD"})*/}`
+    document.getElementById("monthlyPayment").innerText = `${payments[0].payment.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
+    document.getElementById("totalPrincipal").innerText = `${totalPrincipal.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
     let totalInterest = parseFloat(payments[(payments.length - 1)].totalInterest);
-    document.getElementById("totalInterest").innerText = `$${totalInterest.toFixed(2).toLocaleString()}`
+    document.getElementById("totalInterest").innerText = `${totalInterest.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
     let totalCost =  (totalPrincipal + totalInterest)
-    totalCost = totalCost.toFixed(2)
-    document.getElementById("totalCost").innerText = `$${totalCost.toLocaleString()}`
+    
+    document.getElementById("totalCost").innerText = `${totalCost.toLocaleString("en-us",{style:'currency', currency:'USD', signDisplay:"never"})}`
 }
 loadpage()
