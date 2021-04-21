@@ -24,11 +24,35 @@ function buildPaymentSchedule() {
     let balance = parseInt(document.getElementById("balance").value)
     let term = parseInt(document.getElementById("term").value) * 12
     let rate = parseFloat(document.getElementById("rate").value)/100
+    if(checkForBadInput(balance,term,rate)){
+        return
+    }
     let inputArray = [balance,term,rate]
     localStorage.setItem("inputArray", JSON.stringify(inputArray))
     let paymentObj = getPayments(balance, term, rate);
 
     displayData(paymentObj, balance, totalInterest);
+}
+
+function checkForBadInput(balance, term, rate){
+    if (isNaN(balance) || isNaN(term) || isNaN(rate) ){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: 'One of your inputs isn\'t a number'
+        })
+        return true;
+    }else if(balance<=0 || term <=0 || rate<=0){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: 'All inputs must be greater than zero'
+        })
+        return true;
+    }
+    return false
 }
 
 function getPayments(balance, term, rate) {

@@ -59,3 +59,7 @@ body{
         code {
             font-size: 80%;
         }
+        .img-small{
+            height: 100px;
+            width: auto;
+        }
